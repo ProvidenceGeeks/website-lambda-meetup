@@ -1,2 +1,10 @@
 # website-lambda-meetup
-AWS Lambda for periodically retrieving data from the meetup.com API
+
+## Overview
+Repository for Lambda functionality related to periodically fetching data from the meetup.com API.  Built in ???.
+
+## Project Setup
+
+## Development
+
+## Release Management
