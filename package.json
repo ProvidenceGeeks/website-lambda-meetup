@@ -4,7 +4,7 @@
   "description": "Repository for Lambda functionality related to periodically fetching data from the meetup.com API.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint *.js",
+    "lint": ["eslint *.js", "src *.js"],
     "run": "node src/index.js"
   },
   "repository": "https://github.com/ProvidenceGeeks/website-lambda-meetup.git",
@@ -12,14 +12,5 @@
   "license": "MIT",
   "devDependencies": {
     "eslint": "^4.8.0"
-  },
-  "dependencies": {
-    "express": "^4.16.1"
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "node": true
-    }
   }
 }
