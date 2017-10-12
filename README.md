@@ -9,10 +9,11 @@ Please review the local development environment [steps](https://github.com/Provi
 
 1. In your IDE, Import this project as a Node.jS Express App project.
 2. In order to run the application, run `yarn run`
-3. Then browse to __http://localhost:8080_
 
-All available tasks are in the *scripts* section of *package.json*.
+
 
 ## Development
+
+All available tasks are in the *scripts* section of *package.json*.
 
 ## Release Management
