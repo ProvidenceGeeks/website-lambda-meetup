@@ -7,7 +7,7 @@ Repository for Lambda functionality related to periodically fetching data from t
 
 Please review the local development environment [steps](https://github.com/ProvidenceGeeks/website-docs/wiki/Onboarding-Guide#lambda) before getting started.
 
-1. In your IDE, Import this project as a Node.jS Express App project.
+1. Import the project in your IDE.
 2. In order to run the application, run `yarn run`
 
 
