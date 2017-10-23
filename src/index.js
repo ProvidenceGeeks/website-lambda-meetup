@@ -1,10 +1,20 @@
 var fs;
 var promises;
-var request = require('request');
+var request;
 
-// eslint-disable-next-line no-console
-console.log('Hello! The current date and time is: ' + Date());
+const meetups = [
+  'Prov-JS',
+  'Kenzan-Providence-Hack-Nights',
+  'Girl-Develop-It-Providence',
+  'Tech-Collective-Meetups',
+  'MojoTech-Meetups',
+  'Rhode-Island-Makers-Microcontrollers-Robotics-Meetup',
+  'ux-meetup',
+  'IntraCityGeeks',
+  'WordPressRI'
+];
 
+request = require('request');
 fs = require('fs');
 
 function getData(url) {
@@ -26,21 +36,13 @@ function getData(url) {
 
 }
 
-let meetups = [
-  'Prov-JS',
-  'Kenzan-Providence-Hack-Nights',
-  'Girl-Develop-It-Providence',
-  'Tech-Collective-Meetups',
-  'MojoTech-Meetups',
-  'Rhode-Island-Makers-Microcontrollers-Robotics-Meetup',
-  'ux-meetup',
-  'IntraCityGeeks',
-  'WordPressRI'
-];
+function init() {
+  promises = meetups.map(meetup => getData(`https://api.meetup.com/${meetup}/events`));
 
-promises = meetups.map(meetup => getData(`https://api.meetup.com/${meetup}/events`));
+  Promise.all(promises)
+    .then(results => {
+      fs.writeFile('meetup-data.json', JSON.stringify(results, null, 2));
+    });
+}
 
-Promise.all(promises)
-  .then(results => {
-    fs.writeFile('meetup-data.json', JSON.stringify(results, null, 2));
-  });
+init();
