@@ -22,7 +22,7 @@ const meetups = [
 /* {
  *   "Prov-JS": [],
  *   "Kenzan-Providence-Hack-Nights": [{
- *     
+ *
  *   }, {
  *
  *   }],
@@ -87,7 +87,6 @@ function resolveMeetupEventsDataS3(results) {
     }
   });
 }
-
 
 function init() {
   const promises = meetups.map(meetup => getMeetupEventsData(`https://api.meetup.com/${meetup}/events`));
