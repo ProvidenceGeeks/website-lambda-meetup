@@ -31,12 +31,28 @@ function formatResults(results) {
   return JSON.stringify(results, null, 2);
 }
 
-function resolveMeetupEventsDataLocal(results) {
-  fs.writeFile('./output/meetup-data.json', formatResults(results));
-}
-
 function handleError(error) {
   console.log(`ERROR: ${error}.  Should probably log this somewhere`); // eslint-disable-line
+}
+
+function getMeetupEventsData(url) {
+  return new Promise(function(resolve, reject) {
+
+    request({
+      method: 'GET',
+      uri: url
+    }, function (error, response, body) {
+      if (error) {
+        reject(error);
+      }
+      resolve(JSON.parse(body));
+    });
+  });
+
+}
+
+function resolveMeetupEventsDataLocal(results) {
+  fs.writeFile('./output/meetup-data.json', formatResults(results));
 }
 
 function resolveMeetupEventsDataS3(results) {
@@ -68,21 +84,6 @@ function resolveMeetupEventsDataS3(results) {
   });
 }
 
-function getMeetupEventsData(url) {
-  return new Promise(function(resolve, reject) {
-
-    request({
-      method: 'GET',
-      uri: url
-    }, function (error, response, body) {
-      if (error) {
-        reject(error);
-      }
-      resolve(JSON.parse(body));
-    });
-  });
-
-}
 
 function init() {
   const promises = meetups.map(meetup => getMeetupEventsData(`https://api.meetup.com/${meetup}/events`));
