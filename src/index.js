@@ -1,3 +1,6 @@
+/*
+ * This script assumes AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are exported as environment variables
+ */
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const request = require('request');
@@ -14,15 +17,17 @@ const meetups = [
   'WordPressRI'
 ];
 
-// TODO When a meetup has no events, it returns an empty array. we should probably create a hash map, e.g.
+// TODO When a meetup has no events, it returns an empty array. in thinking ot this
+// we should probably create a hash map, e.g.
 /* {
- *   "Prov-JS": [{
- *     // array of events
- *     }, {
+ *   "Prov-JS": [],
+ *   "Kenzan-Providence-Hack-Nights": [{
+ *     
+ *   }, {
  *
  *   }],
- *   "Kenzan-Providence-Hack-Nights": [{
- *      //etc
+ *   "Other Meetup: [{
+ *     //etc
  *   }]
  */
 
