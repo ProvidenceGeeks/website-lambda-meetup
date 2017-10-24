@@ -14,8 +14,7 @@ const meetups = [
   'WordPressRI'
 ];
 
-// When a meetup has no events, it returns an empty array.
-// we should probably create a hash map, e.g.
+// TODO When a meetup has no events, it returns an empty array. we should probably create a hash map, e.g.
 /* {
  *   "Prov-JS": [{
  *     // array of events
