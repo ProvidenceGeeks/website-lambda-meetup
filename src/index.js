@@ -5,6 +5,7 @@ const AWS = require('aws-sdk');
 const fs = require('fs');
 const request = require('request');
 const isProduction = process.env.NODE_ENV === 'production';
+const outputFile = 'meetup-data.json';
 const meetups = [
   'Prov-JS',
   'Kenzan-Providence-Hack-Nights',
@@ -17,23 +18,27 @@ const meetups = [
   'WordPressRI'
 ];
 
-function init() {
+(function init() {
   const promises = meetups.map(meetup => getMeetupEventsData(`https://api.meetup.com/${meetup}/events`));
   const resolveAllPromises = isProduction ? resolveMeetupEventsDataS3 : resolveMeetupEventsDataLocal;
 
   Promise.all(promises)
     .then(resolveAllPromises)
     .catch(handleError);
-}
+})();
 
 function resolveMeetupEventsDataLocal(results) {
-  fs.writeFileSync('./output/meetup-data.json', formatResults(results));
+  const outputPath = `./output/${outputFile}`;
+
+  fs.writeFileSync(outputPath, formatResults(results));
+
+  console.log(`Successfully output data to ${outputPath}`); // eslint-disable-line
 }
 
 function resolveMeetupEventsDataS3(results) {
   const s3 = new AWS.S3();
   const bucket = 'providencegeeks.com';
-  const key = 'external-services-data/meetup/meetup-data.json';
+  const key = `external-services-data/meetup/${outputFile}`;
 
   s3.createBucket({ Bucket: bucket }, function(err) {
 
@@ -75,11 +80,10 @@ function getMeetupEventsData(url) {
 
 function formatResults(results) {
   results = [].concat.apply([], results);
+
   return JSON.stringify(results, null, 2);
 }
 
 function handleError(error) {
   console.log(`ERROR: ${error}.  Should probably log this somewhere`); // eslint-disable-line
 }
-
-init();
