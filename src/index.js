@@ -17,23 +17,6 @@ const meetups = [
   'WordPressRI'
 ];
 
-// TODO When a meetup has no events, it returns an empty array. in thinking ot this
-// we should probably create an object / hash map as the response instead, e.g.
-/*
- * 1) just return an array of events
- * [{
- *     meetup: "Prov-JS",
- *     name: "Webpack all the things"
- *     startTime: 123221313
- *   }, {
- *     meetup: "Kenzan",
- *     name: "Rollup all things things instead!"
- *     startTime: 123221313
- *   }, {
- *     // etc
- *   }]
- */
-
 function init() {
   const promises = meetups.map(meetup => getMeetupEventsData(`https://api.meetup.com/${meetup}/events`));
   const resolveAllPromises = isProduction ? resolveMeetupEventsDataS3 : resolveMeetupEventsDataLocal;
@@ -44,7 +27,7 @@ function init() {
 }
 
 function resolveMeetupEventsDataLocal(results) {
-  fs.writeFile('./output/meetup-data.json', formatResults(results));
+  fs.writeFileSync('./output/meetup-data.json', formatResults(results));
 }
 
 function resolveMeetupEventsDataS3(results) {
@@ -91,12 +74,12 @@ function getMeetupEventsData(url) {
 }
 
 function formatResults(results) {
+  results = [].concat.apply([], results);
   return JSON.stringify(results, null, 2);
 }
 
 function handleError(error) {
   console.log(`ERROR: ${error}.  Should probably log this somewhere`); // eslint-disable-line
 }
-
 
 init();
