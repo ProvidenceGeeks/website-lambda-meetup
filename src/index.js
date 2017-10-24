@@ -39,7 +39,7 @@ function handleError(error) {
   console.log(`ERROR: ${error}.  Should probably log this somewhere`); // eslint-disable-line
 }
 
-function resolveMeetupEventsDataProduction(results) {
+function resolveMeetupEventsDataS3(results) {
   const s3 = new AWS.S3();
   const bucket = 'providencegeeks.com';
   const key = 'external-services-data/meetup/meetup-data.json';
@@ -86,7 +86,7 @@ function getMeetupEventsData(url) {
 
 function init() {
   const promises = meetups.map(meetup => getMeetupEventsData(`https://api.meetup.com/${meetup}/events`));
-  const resolveAllPromises = isProduction ? resolveMeetupEventsDataProduction : resolveMeetupEventsDataLocal;
+  const resolveAllPromises = isProduction ? resolveMeetupEventsDataS3 : resolveMeetupEventsDataLocal;
 
   Promise.all(promises)
     .then(resolveAllPromises)
