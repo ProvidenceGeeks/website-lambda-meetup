@@ -28,11 +28,15 @@ const meetups = [
  */
 
 function formatResults(results) {
-  return JSON.stringify(results, null, 2)
+  return JSON.stringify(results, null, 2);
 }
 
 function resolveMeetupEventsDataLocal(results) {
   fs.writeFile('./output/meetup-data.json', formatResults(results));
+}
+
+function handleError(error) {
+  console.log(`ERROR: ${error}.  Should probably log this somewhere`); // eslint-disable-line
 }
 
 function resolveMeetupEventsDataProduction(results) {
@@ -40,10 +44,10 @@ function resolveMeetupEventsDataProduction(results) {
   const bucket = 'providencegeeks.com';
   const key = 'external-services-data/meetup/meetup-data.json';
 
-  s3.createBucket({Bucket: bucket}, function(err, data) {
+  s3.createBucket({ Bucket: bucket }, function(err) {
 
     if (err) {
-      console.log(err);
+      handleError(err);
     } else {
       const params = {
         Bucket: bucket,
@@ -52,11 +56,11 @@ function resolveMeetupEventsDataProduction(results) {
         ACL: 'public-read'
       };
 
-      s3.putObject(params, function(err, data) {
+      s3.putObject(params, function(err) {
         if (err) {
-          console.error(err)
+          handleError(err);
         } else {
-          console.log(`Successfully uploaded data to ${bucket}/${key}`);
+          console.log(`Successfully uploaded data to ${bucket}/${key}`); // eslint-disable-line
         }
       });
 
@@ -67,28 +71,26 @@ function resolveMeetupEventsDataProduction(results) {
 function getMeetupEventsData(url) {
   return new Promise(function(resolve, reject) {
 
-    request({ method: 'GET',
-        uri: url
-      }, function (error, response, body) {
-        if (error) {
-          reject(error);
-        }
-        resolve(JSON.parse(body));
+    request({
+      method: 'GET',
+      uri: url
+    }, function (error, response, body) {
+      if (error) {
+        reject(error);
       }
-    );
+      resolve(JSON.parse(body));
+    });
   });
 
 }
 
 function init() {
   const promises = meetups.map(meetup => getMeetupEventsData(`https://api.meetup.com/${meetup}/events`));
-  const promiseResolver = isProduction ? resolveMeetupEventsDataProduction : resolveMeetupEventsDataLocal;
+  const resolveAllPromises = isProduction ? resolveMeetupEventsDataProduction : resolveMeetupEventsDataLocal;
 
   Promise.all(promises)
-    .then(promiseResolver)
-    .catch((err) => {
-      console.error(`ERROR: ${err}.  Should probably log this somewhere?`);
-    });
+    .then(resolveAllPromises)
+    .catch(handleError);
 }
 
 init();
