@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint *.js src/*.js",
-
-    "run": "node src/index.js"
+    "fetch": "node src/index.js"
   },
   "repository": "https://github.com/ProvidenceGeeks/website-lambda-meetup.git",
   "author": "mdiwale@kenzan.com",
   "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.139.0",
+    "request": "^2.83.0"
+  },
   "devDependencies": {
     "eslint": "^4.8.0"
   }
