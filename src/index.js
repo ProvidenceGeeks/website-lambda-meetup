@@ -35,7 +35,7 @@ function run() {
 }
 
 function resolveMeetupEventsDataLocal(results) {
-  const outputBase = `./output`;
+  const outputBase = './output';
   const outputPath = `${outputBase}/${outputFile}`;
 
   fs.mkdirSync(outputBase);

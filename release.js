@@ -10,14 +10,13 @@ archiveRelease(release);
 
 function archiveRelease(onEnd) {
 
-  // prepout directory
+  // prep output directory
   fs.mkdirSync('./archive');
 
   const output = fs.createWriteStream(zipOutput);
   const archive = archiver('zip', {
     zlib: { level: 9 } // Sets the compression level.
   });
-
 
   output.on('finish', function() {
     console.log('zip made, release it!'); // eslint-disable-line
@@ -28,14 +27,8 @@ function archiveRelease(onEnd) {
     throw err;
   });
 
-  // pipe archive data to the file
   archive.pipe(output);
-
-  // append a file
   archive.file('./src/index.js', { name: 'index.js' });
-
-  // finalize the archive (ie we are done appending files but streams have to finish yet)
-  // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
   archive.finalize();
 }
 
