@@ -1,9 +1,6 @@
 /*
  * This script assumes AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are exported as environment variables
  */
-// const request = require('request');
-// const isProduction = process.env.NODE_ENV === 'production';
-// const outputFile = 'meetup-data.json';
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
