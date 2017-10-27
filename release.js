@@ -41,7 +41,7 @@ function release() {
   s3.createBucket({ Bucket: bucket }, function(err) {
 
     if (err) {
-      handleError(err);
+      console.log(`ERROR: ${error}.  Should probably log this somewhere`); // eslint-disable-line
     } else {
       const params = {
         Bucket: bucket,
