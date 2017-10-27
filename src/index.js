@@ -3,7 +3,7 @@
  */
 const AWS = require('aws-sdk');
 const fs = require('fs');
-const request = require('request');
+const https = require('https');
 const isProduction = process.env.NODE_ENV === 'production';
 const outputFile = 'meetup-data.json';
 const meetups = [
@@ -18,14 +18,22 @@ const meetups = [
   'WordPressRI'
 ];
 
-(function init() {
+// expose handler for Lambda
+exports.run = run;
+
+// if we're developing locally, run the handler for us
+if (!isProduction) {
+  run();
+}
+
+function run() {
   const promises = meetups.map(meetup => getMeetupEventsData(`https://api.meetup.com/${meetup}/events`));
   const resolveAllPromises = isProduction ? resolveMeetupEventsDataS3 : resolveMeetupEventsDataLocal;
 
   Promise.all(promises)
     .then(resolveAllPromises)
     .catch(handleError);
-})();
+}
 
 function resolveMeetupEventsDataLocal(results) {
   const outputPath = `./output/${outputFile}`;
@@ -66,14 +74,21 @@ function resolveMeetupEventsDataS3(results) {
 function getMeetupEventsData(url) {
   return new Promise(function(resolve, reject) {
 
-    request({
-      method: 'GET',
-      uri: url
-    }, function (error, response, body) {
-      if (error) {
-        reject(error);
-      }
-      resolve(JSON.parse(body));
+    https.get(url, (resp) => {
+      let data = '';
+
+      // A chunk of data has been recieved.
+      resp.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      // The whole response has been received. Print out the result.
+      resp.on('end', () => {
+        resolve(JSON.parse(data));
+      });
+
+    }).on('error', (err) => {
+      reject(() => handleError(err));
     });
   });
 }
