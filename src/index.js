@@ -21,7 +21,6 @@ const meetups = [
 // expose handler for Lambda
 exports.run = run;
 
-// if we're developing locally, run the handler for us
 if (!isProduction) {
   run();
 }
@@ -36,8 +35,10 @@ function run() {
 }
 
 function resolveMeetupEventsDataLocal(results) {
-  const outputPath = `./output/${outputFile}`;
+  const outputBase = `./output`;
+  const outputPath = `${outputBase}/${outputFile}`;
 
+  fs.mkdirSync(outputBase);
   fs.writeFileSync(outputPath, formatResults(results));
 
   console.log(`Successfully output data to ${outputPath}`); // eslint-disable-line
