@@ -31,3 +31,15 @@ jobs:
       - run:
           name: Run Project Build
           command: yarn run lint
+
+      - run:
+          name: Release
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            
+              echo "Master branch, releasing to production"
+              yarn run release
+
+            else
+              echo "not master, do not release"
+            fi

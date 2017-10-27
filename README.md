@@ -24,3 +24,4 @@ export NODE_ENV=production && yarn run fetch
 All available tasks are in the *scripts* section of *package.json*.
 
 ## Release Management
+This project automatically deploys this Lambda to S3 on every merge into master.
