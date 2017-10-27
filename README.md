@@ -24,3 +24,6 @@ export NODE_ENV=production && yarn run fetch
 All available tasks are in the *scripts* section of *package.json*.
 
 ## Release Management
+// TODO remove the need for step 2?
+1. This project automatically deploys this Lambda to S3 as a zip on every merge into master.
+1. Update the Lambda by uploading the uploaded using this [S3 path](https://s3.amazonaws.com/providencegeeks.com/lambda/meetup.zip)

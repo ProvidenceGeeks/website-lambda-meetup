@@ -5,16 +5,18 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint *.js src/*.js",
-    "fetch": "node src/index.js"
+    "fetch": "rimraf ./output && node ./src/index.js",
+    "release": "rimraf ./archive && node ./release.js"
   },
   "repository": "https://github.com/ProvidenceGeeks/website-lambda-meetup.git",
   "author": "mdiwale@kenzan.com",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.139.0",
-    "request": "^2.83.0"
+    "aws-sdk": "^2.139.0"
   },
   "devDependencies": {
-    "eslint": "^4.8.0"
+    "archiver": "^2.1.0",
+    "eslint": "^4.8.0",
+    "rimraf": "^2.6.2"
   }
 }
