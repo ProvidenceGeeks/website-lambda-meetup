@@ -5,7 +5,6 @@ const AWS = require('aws-sdk');
 const fs = require('fs');
 const https = require('https');
 const isProduction = process.env.NODE_ENV === 'production';
-const outputFile = 'meetup-data.json';
 const meetups = [
   'Prov-JS',
   'Kenzan-Providence-Hack-Nights',
@@ -17,6 +16,11 @@ const meetups = [
   'IntraCityGeeks',
   'WordPressRI'
 ];
+const outputFile = 'meetup-data.json';
+const s3Config = {
+  bucket: 'data.pvdgeeks.org',
+  key: 'meetup'
+};
 
 // expose handler for Lambda
 exports.run = run;
@@ -46,10 +50,9 @@ function resolveMeetupEventsDataLocal(results) {
 
 function resolveMeetupEventsDataS3(results) {
   const s3 = new AWS.S3();
-  const bucket = 'providencegeeks.com';
-  const key = `external-services-data/meetup/${outputFile}`;
+  const key = `${s3Config.key}/${outputFile}`;
 
-  s3.createBucket({ Bucket: bucket }, function(err) {
+  s3.createBucket({ Bucket: s3Config.bucket }, function(err) {
 
     if (err) {
       handleError(err);

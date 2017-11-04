@@ -34,8 +34,8 @@ function archiveRelease(onEnd) {
 
 function release() {
   const s3 = new AWS.S3();
-  const bucket = 'providencegeeks.com';
-  const key = 'lambda/meetup.zip';
+  const bucket = 'lambda.pvdgeeks.org';
+  const key = 'meetup.zip';
   const upload = fs.readFileSync(zipOutput);
 
   s3.createBucket({ Bucket: bucket }, function(err) {
