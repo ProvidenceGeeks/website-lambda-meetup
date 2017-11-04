@@ -58,7 +58,7 @@ function resolveMeetupEventsDataS3(results) {
       handleError(err);
     } else {
       const params = {
-        Bucket: bucket,
+        Bucket: s3Config.bucket,
         Key: key,
         Body: formatResults(results),
         ACL: 'public-read'
@@ -68,7 +68,7 @@ function resolveMeetupEventsDataS3(results) {
         if (err) {
           handleError(err);
         } else {
-          console.log(`Successfully uploaded data to ${bucket}/${key}`); // eslint-disable-line
+          console.log(`Successfully uploaded data to ${s3Config.bucket}/${key}`); // eslint-disable-line
         }
       });
     }
