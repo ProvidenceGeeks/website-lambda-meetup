@@ -36,21 +36,23 @@ function run() {
 
   Promise.all([eventsData, groupsData])
     .then(function (results) {
-      results[0] = JSON.parse(formatResults(results[0]));
+      let events = JSON.parse(formatResults(results[0]));
+      let groups = results[1];
+      let groupImages = {};
 
-      results[0].map(event => {
-        event.group.group_photo = "TEST";
+      // Build object containing group name, and associated group image.
+      groups.map(group => {
+        groupImages[group.urlname] = group.group_photo !== undefined ? group.group_photo.highres_link : null;
       });
 
-      results[1].map(group => {
-        console.log(`GROUP: ${ group.name } -> ${ group.group_photo !== undefined ? group.group_photo.highres_link : null }`);
+      // Append this image to event
+      events.map(event => {
+        event.group.group_photo = groupImages[event.group.urlname]; // eslint-disable-line camelcase
       });
 
-      resolveMeetupEventsDataLocal(results[0]);
+      resolveAllPromises(events);
     })
     .catch(handleError);
-
-  // resolveAllPromises(eventsData);
 }
 
 function resolveMeetupEventsDataLocal(results) {
