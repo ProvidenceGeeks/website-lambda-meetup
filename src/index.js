@@ -30,11 +30,28 @@ if (!isProduction) {
 }
 
 function run() {
-  const promises = meetups.map(meetup => getMeetupEventsData(`https://api.meetup.com/${meetup}/events`));
   const resolveAllPromises = isProduction ? resolveMeetupEventsDataS3 : resolveMeetupEventsDataLocal;
+  const eventsData = getMeeptupEventsData();
+  const groupsData = getMeeptupGroupsData();
 
-  Promise.all(promises)
-    .then(resolveAllPromises)
+  Promise.all([eventsData, groupsData])
+    .then(function (results) {
+      let events = JSON.parse(formatResults(results[0]));
+      let groups = results[1];
+      let groupImages = {};
+
+      // Build object containing group name, and associated group image.
+      groups.map(group => {
+        groupImages[group.urlname] = group.group_photo !== undefined ? group.group_photo.highres_link : null;
+      });
+
+      // Append this image to event
+      events.map(event => {
+        event.group.group_photo = groupImages[event.group.urlname]; // eslint-disable-line camelcase
+      });
+
+      resolveAllPromises(events);
+    })
     .catch(handleError);
 }
 
@@ -75,7 +92,27 @@ function resolveMeetupEventsDataS3(results) {
   });
 }
 
-function getMeetupEventsData(url) {
+function getMeeptupEventsData() {
+  const promises = meetups.map(meetup => getData(`https://api.meetup.com/${meetup}/events`));
+
+  return Promise.all(promises)
+    .then(function (results) {
+      return results;
+    })
+    .catch(handleError);
+}
+
+function getMeeptupGroupsData() {
+  const promises = meetups.map(meetup => getData(`https://api.meetup.com/${meetup}`));
+
+  return Promise.all(promises)
+    .then(function (results) {
+      return results;
+    })
+    .catch(handleError);
+}
+
+function getData(url) {
   return new Promise(function(resolve, reject) {
 
     https.get(url, (resp) => {
