@@ -1,6 +1,6 @@
 {
   "name": "website-lambda-meetup",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Repository for Lambda functionality related to periodically fetching data from the meetup.com API.",
   "main": "index.js",
   "scripts": {
