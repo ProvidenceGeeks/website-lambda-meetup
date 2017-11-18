@@ -5,17 +5,18 @@ const archiver = require('archiver');
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const packageJson = require('./package.json');
+const archiveOutputDirectory = './archive';
 const s3Bucket = 'lambda.pvdgeeks.org';
 const s3Key = `meetup-${packageJson.version}.zip`;
 const zipOutput = `./archive/${s3Key}`;
 
-// creating a zip is async, and we are passing release as an "anDone" callback function
+// creating a zip is async, so we pass the release function as callback when the zip has been created
 archiveRelease(release);
 
 function archiveRelease(onDone) {
 
   // prep output directory
-  fs.mkdirSync('./archive');
+  fs.mkdirSync(archiveOutputDirectory);
 
   const output = fs.createWriteStream(zipOutput);
   const archive = archiver('zip', {
