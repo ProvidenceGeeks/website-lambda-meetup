@@ -42,7 +42,7 @@ function run() {
 
       // Build object containing group name, and associated group image.
       groups.map(group => {
-        groupImages[group.urlname] = group.group_photo !== undefined ? group.group_photo.highres_link : null;
+        groupImages[group.urlname] = group.group_photo !== undefined ? group.group_photo.photo_link : null;
       });
 
       // Append this image to event
