@@ -24,4 +24,4 @@ export NODE_ENV=production && yarn run fetch
 All available tasks are in the *scripts* section of *package.json*.
 
 ## Release Management
-See the Release Management wiki [here](https://github.com/ProvidenceGeeks/website-docs/wiki/Release-Management#Lambda)
+Release management and procedure docs can be found in the [wiki](https://github.com/ProvidenceGeeks/website-docs/wiki/Release-Management)
