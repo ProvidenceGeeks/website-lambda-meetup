@@ -14,7 +14,8 @@ const meetups = [
   'Rhode-Island-Makers-Microcontrollers-Robotics-Meetup',
   'ux-meetup',
   'IntraCityGeeks',
-  'WordPressRI'
+  'WordPressRI',
+  'Providence-Geeks'
 ];
 const outputFile = 'meetup-data.json';
 const s3Config = {
