@@ -15,7 +15,8 @@ const meetups = [
   'ux-meetup',
   'IntraCityGeeks',
   'WordPressRI',
-  'Providence-Geeks'
+  'Providence-Geeks',
+  'RIVirtualReality'
 ];
 const outputFile = 'meetup-data.json';
 const s3Config = {
