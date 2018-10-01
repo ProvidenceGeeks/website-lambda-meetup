@@ -7,7 +7,7 @@ const https = require('https');
 const isProduction = process.env.NODE_ENV === 'production';
 const meetups = [
   'Prov-JS',
-  'Kenzan-Providence-Hack-Nights',
+  'CloudRI',
   'Girl-Develop-It-Providence',
   'Tech-Collective-Meetups',
   'MojoTech-Meetups',
