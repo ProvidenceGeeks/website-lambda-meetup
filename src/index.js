@@ -9,7 +9,6 @@ const meetups = [
   'Prov-JS',
   'CloudRI',
   'Girl-Develop-It-Providence',
-  'Tech-Collective-Meetups',
   'MojoTech-Meetups',
   'Rhode-Island-Makers-Microcontrollers-Robotics-Meetup',
   'ux-meetup',
@@ -99,7 +98,13 @@ function getMeeptupEventsData() {
 
   return Promise.all(promises)
     .then(function (results) {
-      return results;
+      const validEvents = results.filter((event) => {
+        if (!event.errors) {
+          return event;
+        }
+      });
+
+      return validEvents;
     })
     .catch(handleError);
 }
@@ -109,7 +114,13 @@ function getMeeptupGroupsData() {
 
   return Promise.all(promises)
     .then(function (results) {
-      return results;
+      const activeGroups = results.filter((group) => {
+        if (!group.errors) {
+          return group;
+        }
+      });
+
+      return activeGroups;
     })
     .catch(handleError);
 }
