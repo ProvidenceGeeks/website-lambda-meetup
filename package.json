@@ -12,7 +12,7 @@
   "author": "mdiwale@kenzan.com",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.139.0"
+    "aws-sdk": "^2.814.0"
   },
   "devDependencies": {
     "archiver": "^2.1.0",
